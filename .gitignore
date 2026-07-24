@@ -2,57 +2,21 @@
 # Build artifacts
 dist/
 build/
-*.css
 *.js
+*.ts
 
 # Dependencies
 node_modules/
 
-# Python
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.Python
-env/
-venv/
-.venv/
-pip-log.txt
-pip-delete-this-directory.txt
-.tox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
+# Editors
+.vscode/
+.idea/
+
+# Logs
 *.log
-.DS_Store
-Thumbs.db
 
 # Environment
 .env
 .env.local
-.env.*
-
-# Editors
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# Distribution / packaging
-.Python
-env/
-venv/
-.venv/
-pip-log.txt
-pip-delete-this-directory.txt
-.tox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
+*.env.*
 ```

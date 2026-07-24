@@ -16,6 +16,7 @@ import { AlgorithmsPage } from "./components/AlgorithmsPage";
 import { ProjectsPage } from "./components/ProjectsPage";
 import { ReferencePage } from "./components/ReferencePage";
 import { ProfilePage } from "./components/ProfilePage";
+import { FlashcardsPage } from "./components/FlashcardsPage";
 import { buildGlossaryMatcher } from "./glossaryHighlight";
 import { countTasks } from "./markdown";
 
@@ -35,6 +36,7 @@ function TopNav() {
     <nav className="top-nav" aria-label="Разделы">
       <NavLink to="/algorithms" className={cls}>Алгоритмы</NavLink>
       <NavLink to="/projects" className={cls}>Проекты</NavLink>
+      <NavLink to="/flashcards" className={cls}>Флешкарты</NavLink>
       <NavLink to="/reference" className={cls}>Справочник</NavLink>
       <NavLink to="/profile" className={cls}>Профиль</NavLink>
     </nav>
@@ -245,6 +247,7 @@ export function App() {
                 <Route path="/" element={<Navigate to="/algorithms" replace />} />
                 <Route path="/algorithms" element={<AlgorithmsPage {...sectionProps} />} />
                 <Route path="/projects" element={<ProjectsPage {...sectionProps} />} />
+                <Route path="/flashcards" element={<FlashcardsPage />} />
                 <Route path="/reference" element={<ReferencePage {...sectionProps} />} />
                 <Route path="/profile" element={<ProfilePage v2State={v2State} />} />
                 <Route path="*" element={<Navigate to="/algorithms" replace />} />
