@@ -163,8 +163,8 @@ export function App() {
     navigate("/algorithms");
   }, [v2State, navigate]);
 
-  async function handleCreateModule(input: CreateModuleInput) {
-    const mod = await api.createModule(input);
+  async function handleCreateModule(input: CreateModuleInput, adminToken: string) {
+    const mod = await api.createModule(input, adminToken);
     setState((c) => ({ ...c, modules: [...c.modules, mod] }));
     setActiveId(mod.id);
     const v2 = await getV2State();

@@ -72,9 +72,10 @@ export const api = {
     return request<AppStateDto>("/api/state");
   },
 
-  createModule: (input: CreateModuleInput) =>
+  createModule: (input: CreateModuleInput, adminToken: string) =>
     request<ModuleItem>("/api/modules", {
       method: "POST",
+      headers: { "x-admin-token": adminToken },
       body: JSON.stringify(input)
     }),
 
