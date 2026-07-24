@@ -5,14 +5,17 @@ import type { CreateModuleInput, SectionType } from "../../shared/types";
 type ImportModalProps = {
   open: boolean;
   onClose: () => void;
-  onSubmit: (input: CreateModuleInput & { sectionType: SectionType }) => Promise<void>;
+  onSubmit: (input: CreateModuleInput & { sectionType: SectionType }, adminToken: string) => Promise<void>;
 };
+
+const TOKEN_KEY = "moduleAdminToken";
 
 export function ImportModal({ open, onClose, onSubmit }: ImportModalProps) {
   const [title, setTitle] = useState("");
   const [sectionType, setSectionType] = useState<SectionType>("algorithms");
   const [topicName, setTopicName] = useState("");
   const [content, setContent] = useState("");
+  const [adminToken, setAdminToken] = useState(() => localStorage.getItem(TOKEN_KEY) || "");
   const [submitting, setSubmitting] = useState(false);
   const fileRef = useRef<HTMLInputElement | null>(null);
 
@@ -37,14 +40,15 @@ export function ImportModal({ open, onClose, onSubmit }: ImportModalProps) {
   }
 
   async function handleSubmit() {
-    if (!content.trim()) return;
+    if (!content.trim() || !adminToken.trim()) return;
     setSubmitting(true);
+    localStorage.setItem(TOKEN_KEY, adminToken.trim());
     await onSubmit({ 
       title: title || "Без названия",
       content,
       sectionType,
       week: topicName || "Общие"
-    });
+    }, adminToken.trim());
     resetAndClose();
   }
 
@@ -100,9 +104,14 @@ export function ImportModal({ open, onClose, onSubmit }: ImportModalProps) {
           <textarea id="module-content" value={content} onChange={(event) => setContent(event.target.value)} placeholder={"# Заголовок\n\n## Теория\nОписание паттерна...\n\n## Практика\n- [ ] Задача 1"} />
         </div>
 
+        <div className="field">
+          <label htmlFor="module-token">Admin-токен</label>
+          <input id="module-token" type="password" value={adminToken} onChange={(event) => setAdminToken(event.target.value)} placeholder="Токен из ADMIN_TOKEN на сервере" />
+        </div>
+
         <div className="modal-actions">
           <button className="btn" onClick={resetAndClose}>Отмена</button>
-          <button className="btn btn-primary" onClick={handleSubmit} disabled={submitting || !content.trim()}>
+          <button className="btn btn-primary" onClick={handleSubmit} disabled={submitting || !content.trim() || !adminToken.trim()}>
             {submitting ? "Добавляем..." : `Добавить в ${sectionLabels[sectionType]}`}
           </button>
         </div>

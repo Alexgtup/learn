@@ -113,3 +113,33 @@ export type CreateLessonInput = {
   title: string;
   content: string;
 };
+
+// Spaced repetition types
+export type RepetitionStats = {
+  interval: number; // дней до следующего повторения
+  repetition: number; // количество успешных повторений подряд
+  easeFactor: number; // коэффициент легкости (2.0 - 2.5 обычно)
+  lastReview: string | null;
+  nextReview: string | null;
+};
+
+export type QualityGrade = 0 | 1 | 2 | 3 | 4 | 5;
+
+export type Flashcard = {
+  id: string;
+  lessonId: string;
+  question: string;
+  answer: string;
+  stats: RepetitionStats;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type LearningSession = {
+  id: string;
+  startedAt: string;
+  completedAt: string | null;
+  cardsReviewed: number;
+  correctAnswers: number;
+  streak: number;
+};

@@ -16,12 +16,17 @@ import {
   getNote, updateNote, getReview, updateReview,
   recordActivity, exportState, importState
 } from "./store.js";
+import { flashcardsRouter } from "./routes/flashcards.js";
 
 const app = express();
 const port = Number(process.env.PORT || 5175);
 
 app.use(cors());
 app.use(express.json({ limit: "2mb" }));
+
+// Подключение роутов для флешкарт
+app.use("/api/flashcards", flashcardsRouter);
+app.use("/api/sessions", flashcardsRouter);
 
 const createModuleSchema = z.object({
   title: z.string().optional(),
@@ -108,7 +113,7 @@ app.get("/api/v2/state", async (_req, res) => {
   }
 });
 
-app.post("/api/modules", async (req, res, next) => {
+app.post("/api/modules", requireAdmin, async (req, res, next) => {
   try {
     const input = createModuleSchema.parse(req.body);
     const module = await createModule(input);

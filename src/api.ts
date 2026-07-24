@@ -1,5 +1,6 @@
 import type { AppStateDto, CreateModuleInput, ModuleItem, AppStateV2 } from "../shared/types";
 import type { GlossaryTerm, GlossaryTermSummary, UpsertGlossaryInput } from "../shared/types";
+import type { Flashcard, LearningSession, QualityGrade } from "../shared/types";
 
 async function request<T>(url: string, options?: RequestInit): Promise<T> {
   const response = await fetch(url, {
@@ -71,9 +72,10 @@ export const api = {
     return request<AppStateDto>("/api/state");
   },
 
-  createModule: (input: CreateModuleInput) =>
+  createModule: (input: CreateModuleInput, adminToken: string) =>
     request<ModuleItem>("/api/modules", {
       method: "POST",
+      headers: { "x-admin-token": adminToken },
       body: JSON.stringify(input)
     }),
 
@@ -127,6 +129,33 @@ export const api = {
   importState: (data: any) =>
     request<{ ok: boolean }>("/api/import", {
       method: "POST", body: JSON.stringify(data)
+    }),
+
+  // Flashcards API
+  getFlashcards: () => request<Flashcard[]>("/api/flashcards"),
+  getDueFlashcards: () => request<Flashcard[]>("/api/flashcards/due"),
+  updateFlashcardStats: (cardId: string, quality: QualityGrade) =>
+    request<Flashcard>(`/api/flashcards/${encodeURIComponent(cardId)}/review`, {
+      method: "PATCH",
+      body: JSON.stringify({ quality })
+    }),
+  createFlashcard: (lessonId: string, question: string, answer: string) =>
+    request<Flashcard>("/api/flashcards", {
+      method: "POST",
+      body: JSON.stringify({ lessonId, question, answer })
+    }),
+  deleteFlashcard: (cardId: string) =>
+    request<void>(`/api/flashcards/${encodeURIComponent(cardId)}`, {
+      method: "DELETE"
+    }),
+
+  // Learning sessions API
+  getSessionStats: () => request<{ totalSessions: number; streak: number }>("/api/sessions/stats"),
+  startSession: () => request<LearningSession>("/api/sessions", { method: "POST" }),
+  completeSession: (sessionId: string, cardsReviewed: number, correctAnswers: number) =>
+    request<LearningSession>(`/api/sessions/${encodeURIComponent(sessionId)}/complete`, {
+      method: "PATCH",
+      body: JSON.stringify({ cardsReviewed, correctAnswers })
     }),
 
 };
