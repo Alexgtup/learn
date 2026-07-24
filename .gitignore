@@ -1,4 +1,4 @@
-
+```
 # Build artifacts
 dist/
 build/
@@ -13,14 +13,27 @@ __pycache__/
 *.pyc
 *.pyo
 *.pyd
-
-# Logs
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
 *.log
+.DS_Store
+Thumbs.db
 
 # Environment
 .env
 .env.local
-*.env.*
+.env.*
 
 # Editors
 .vscode/
@@ -28,15 +41,18 @@ __pycache__/
 *.swp
 *.swo
 
-# OS
-.DS_Store
-Thumbs.db
-
-# Coverage
-coverage/
-htmlcov/
+# Distribution / packaging
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
 .coverage
-
-# Testing
-.mypy_cache/
-.pytest_cache/
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+```
