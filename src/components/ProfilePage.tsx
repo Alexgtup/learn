@@ -11,10 +11,9 @@ import { RadarChart } from "./RadarChart";
 
 type Props = {
   v2State: AppStateV2 | null;
-  onMockInterview: () => void;
 };
 
-export function ProfilePage({ v2State, onMockInterview }: Props) {
+export function ProfilePage({ v2State }: Props) {
   const [importing, setImporting] = useState(false);
 
   const stats = useMemo(() => {
@@ -106,7 +105,7 @@ export function ProfilePage({ v2State, onMockInterview }: Props) {
         </div>
         <div className="section-stats">
           {streak > 0 && <div className="stat-chip accent"><Flame size={14} /> {streak} дн. подряд</div>}
-          <button className="stat-chip" onClick={onMockInterview} style={{ cursor: "pointer" }}>
+          <button className="stat-chip" onClick={() => {}} style={{ cursor: "pointer" }}>
             <Timer size={14} /> Mock Interview
           </button>
         </div>
