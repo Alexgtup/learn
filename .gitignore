@@ -2,7 +2,7 @@
 # Dependencies
 node_modules/
 
-# Build outputs
+# Build artifacts
 dist/
 build/
 target/
@@ -16,105 +16,38 @@ __pycache__/
 env/
 venv/
 .venv/
-.venv.bak/
-pip-log.txt
-pip-delete-this-directory.txt
-.tox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-*.log
-*.pot
-*.pyc
-*.pyo
-*.pyd
-.MF
-*.swp
-*.swo
-*~
-.pytest_cache/
+.ENV
+.pip
 .mypy_cache/
-.hypothesis/
-
-# Node.js
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-node_modules/
-jspm_packages/
-web_modules/
-*.js.map
-*.mjs.map
-*.cjs.map
-*.tsbuildinfo
-.nyc_output
-coverage/
-.nyc_output/
-coverage/
-lib-cov/
-*.lcov
-coverage.json
+.pytest_cache/
 .coverage
-.coveralls.yml
-.nyc_output
 coverage/
-node/
-src/node/
-.deps/
-.node_repl_history
-node_modules/
-jspm_packages/
-web_modules/
-*.js.map
-*.mjs.map
-*.cjs.map
-*.tsbuildinfo
-.nyc_output
-istanbul.yml
-.nyc_output/
-coverage/
-node/
-src/node/
-.deps/
-.node_repl_history
 
-# TypeScript
-*.tsbuildinfo
-*.tsx
-*.jsx
+# Logs
+*.log
 
 # Environment variables
 .env
 .env.local
-.env.*
-!.env.example
+*.env.*
 
 # IDE
 .vscode/
 .idea/
 *.swp
 *.swo
-*~
+*.tmp
 
-# Logs
-*.log
-
-# OS generated files
+# OS
 .DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
 Thumbs.db
-Icon?
+
+# Compiled files
+*.o
+*.obj
+*.exe
+*.dll
+*.so
+*.a
+*.out
 ```
-
-Wait, let me reconsider. Looking at the modified files, they are all source code files (.ts, .tsx) and there are no build artifacts, dependency directories, or temporary files in the changes. According to rule #6, if the changes contain only source or config files with no build artifacts, dependencies, or temp files, I should output an empty .gitignore.
-
-Since only source code files were modified (`server/src/index.ts`, `src/App.tsx`, `src/api.ts`, `src/components/ImportModal.tsx`), no files need to be ignored.
-
-(empty)

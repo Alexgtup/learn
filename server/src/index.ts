@@ -113,10 +113,8 @@ app.get("/api/v2/state", async (_req, res) => {
   }
 });
 
-app.post("/api/modules", async (req, res, next) => {
+app.post("/api/modules", requireAdmin, async (req, res, next) => {
   try {
-    requireAdmin(req, res, () => {});
-    if (res.headersSent) return;
     const input = createModuleSchema.parse(req.body);
     const module = await createModule(input);
     res.status(201).json(module);
