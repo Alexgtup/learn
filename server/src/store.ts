@@ -51,7 +51,7 @@ async function writeV2State(state: AppStateV2): Promise<void> {
 }
 
 function sortModules(modules: ModuleItem[]): ModuleItem[] {
-  return modules.toSorted((a, b) => {
+  return modules.toSorted((a: ModuleItem, b: ModuleItem) => {
     return a.weekOrder - b.weekOrder || a.order - b.order || a.title.localeCompare(b.title, "ru");
   });
 }

@@ -78,13 +78,13 @@ app.post("/api/glossary", requireAdmin, async (req, res, next) => {
 app.put("/api/glossary/:slug", requireAdmin, async (req, res, next) => {
   try {
     const input = upsertGlossarySchema.parse(req.body);
-    res.json(await upsertGlossaryTerm(input, req.params.slug));
+    res.json(await upsertGlossaryTerm(input, req.params.slug as string));
   } catch (error) { next(error); }
 });
 
 app.delete("/api/glossary/:slug", requireAdmin, async (req, res, next) => {
   try {
-    const deleted = await deleteGlossaryTerm(req.params.slug);
+    const deleted = await deleteGlossaryTerm(req.params.slug as string);
     if (!deleted) { res.status(404).json({ message: "Not found" }); return; }
     res.status(204).send();
   } catch (error) { next(error); }

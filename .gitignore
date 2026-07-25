@@ -1,23 +1,22 @@
 ```
-# Build artifacts
-dist/
-build/
-*.js
-*.css
-
 # Dependencies
 node_modules/
 
-# Logs and temp files
-*.log
-*.tmp
+# Build outputs
+dist/
+build/
+*.js.map
+*.tsbuildinfo
 
 # Environment
 .env
 .env.local
 *.env.*
 
-# Editors
-.vscode/
-.idea/
+# Logs
+*.log
+
+# Coverage
+coverage/
+.nyc_output/
 ```

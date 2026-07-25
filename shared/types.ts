@@ -119,8 +119,8 @@ export type RepetitionStats = {
   interval: number; // дней до следующего повторения
   repetition: number; // количество успешных повторений подряд
   easeFactor: number; // коэффициент легкости (2.0 - 2.5 обычно)
-  lastReview: string | null;
-  nextReview: string | null;
+  lastReview: Date | null;
+  nextReview: Date | null;
 };
 
 export type QualityGrade = 0 | 1 | 2 | 3 | 4 | 5;
