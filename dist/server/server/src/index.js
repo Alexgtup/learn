@@ -116,7 +116,7 @@ app.get("/api/v2/state", async (_req, res) => {
         res.status(404).json({ message: "v2 store not found" });
     }
 });
-app.post("/api/modules", async (req, res, next) => {
+app.post("/api/modules", requireAdmin, async (req, res, next) => {
     try {
         const input = createModuleSchema.parse(req.body);
         const module = await createModule(input);
