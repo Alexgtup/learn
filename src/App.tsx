@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Activity } from "lucide-react";
+import { Activity, TrendingUp, Award, Target, Flame, BookOpen, GitBranch, Code, Layers, Zap } from "lucide-react";
 import { NavLink, Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import type {
   AppStateDto, AppStateV2, Lesson, ModuleItem,
@@ -19,6 +19,8 @@ import { ProfilePage } from "./components/ProfilePage";
 import { FlashcardsPage } from "./components/FlashcardsPage";
 import { buildGlossaryMatcher } from "./glossaryHighlight";
 import { countTasks } from "./markdown";
+import { CommandPalette } from "./components/CommandPalette";
+import { MockInterview } from "./components/MockInterview";
 
 const emptyState: AppStateDto = { modules: [], checks: {} };
 const emptyChecks: Record<string, boolean> = {};
@@ -28,18 +30,36 @@ function parseGlossaryHash(hash: string): string | null {
   return m ? decodeURIComponent(m[1]) : null;
 }
 
-/* ── TopNav вынесен ── */
-function TopNav() {
+/* ── Premium TopNav with Command Palette ── */
+function TopNav({ onOpenMock }: { onOpenMock: () => void }) {
   const cls = ({ isActive }: { isActive: boolean }) =>
     `nav-link${isActive ? " nav-active" : ""}`;
+  const [commandOpen, setCommandOpen] = useState(false);
+
+  useEffect(() => {
+    const down = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        setCommandOpen(o => !o);
+      }
+    };
+    window.addEventListener('keydown', down);
+    return () => window.removeEventListener('keydown', down);
+  }, []);
+
   return (
-    <nav className="top-nav" aria-label="Разделы">
-      <NavLink to="/algorithms" className={cls}>Алгоритмы</NavLink>
-      <NavLink to="/projects" className={cls}>Проекты</NavLink>
-      <NavLink to="/flashcards" className={cls}>Флешкарты</NavLink>
-      <NavLink to="/reference" className={cls}>Справочник</NavLink>
-      <NavLink to="/profile" className={cls}>Профиль</NavLink>
-    </nav>
+    <>
+      <nav className="top-nav" aria-label="Разделы">
+        <NavLink to="/dashboard" className={cls}>Dashboard</NavLink>
+        <NavLink to="/algorithms" className={cls}>Алгоритмы</NavLink>
+        <NavLink to="/projects" className={cls}>Проекты</NavLink>
+        <NavLink to="/flashcards" className={cls}>Флешкарты</NavLink>
+        <NavLink to="/reference" className={cls}>Справочник</NavLink>
+        <button className="nav-link mock-interview-btn" onClick={onOpenMock}>
+          <Zap size={14} /> Mock Interview
+        </button>
+      </nav>
+    </>
   );
 }
 
@@ -206,6 +226,8 @@ export function App() {
     showToast("Мануал сохранён");
   }
 
+  const [mockOpen, setMockOpen] = useState(false);
+
   const sectionProps = {
     v2State, activeModule, checks: activeChecks,
     onCheckChange: handleCheckChange, glossaryMatcher,
@@ -220,7 +242,7 @@ export function App() {
           <span className="eyebrow">Fullstack Developer</span>
           <h1>Журнал подготовки</h1>
         </div>
-        <TopNav />
+        <TopNav onOpenMock={() => setMockOpen(true)} />
         <div className="spacer" />
         <div className="gauge-wrap" aria-label={`Прогресс ${progress}%`}>
           <Activity size={16} />
@@ -244,13 +266,14 @@ export function App() {
               <GlossaryPage slug={glossarySlug} onClose={closeGlossary} />
             ) : (
               <Routes>
-                <Route path="/" element={<Navigate to="/algorithms" replace />} />
+                <Route path="/" element={<Navigate to="/dashboard" replace />} />
+                <Route path="/dashboard" element={<ProfilePage v2State={v2State} />} />
                 <Route path="/algorithms" element={<AlgorithmsPage {...sectionProps} />} />
                 <Route path="/projects" element={<ProjectsPage {...sectionProps} />} />
                 <Route path="/flashcards" element={<FlashcardsPage />} />
                 <Route path="/reference" element={<ReferencePage {...sectionProps} />} />
-                <Route path="/profile" element={<ProfilePage v2State={v2State} />} />
-                <Route path="*" element={<Navigate to="/algorithms" replace />} />
+                <Route path="/profile" element={<Navigate to="/dashboard" replace />} />
+                <Route path="*" element={<Navigate to="/dashboard" replace />} />
               </Routes>
             )}
           </div>
@@ -268,6 +291,7 @@ export function App() {
         <GlossaryDrawer slug={glossaryDrawerSlug} onClose={() => setGlossaryDrawerSlug(null)} />
       )}
       <Toast message={toast} />
+      <MockInterview open={mockOpen} onClose={() => setMockOpen(false)} v2State={v2State} onStartLesson={(id, type) => { navigate(`/${type}`); setActiveId(id); }} />
     </div>
   );
 }
